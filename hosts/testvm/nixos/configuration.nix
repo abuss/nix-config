@@ -314,9 +314,9 @@
     ];
     packages = [ pkgs.home-manager ];
     
-    shell = pkgs.fish;
+    # shell = pkgs.fish;
     
-    # shell = pkgs.zsh;
+    shell = pkgs.zsh;
   };
 
   system.stateVersion = stateVersion;

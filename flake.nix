@@ -28,7 +28,8 @@
   };
 
   outputs =
-    { self, nix-formatter-pack, nixpkgs, home-manager, ...} @ inputs:
+    # { self, nix-formatter-pack, nixpkgs, home-manager, ...} @ inputs:
+    { self, nixpkgs, home-manager, ...} @ inputs:
     let
       inherit (self) outputs;
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

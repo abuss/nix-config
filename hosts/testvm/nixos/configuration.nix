@@ -37,7 +37,7 @@
     # nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
     optimise.automatic = true;
-    package = pkgs.unstable.nix;
+    # package = pkgs.unstable.nix;
 
     settings = {
       auto-optimise-store = true;

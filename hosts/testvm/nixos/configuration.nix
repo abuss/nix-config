@@ -12,24 +12,7 @@
 #  ++ lib.optional (builtins.pathExists (./hosts + "/${hostname}/extra.nix")) (import ./hosts/${hostname}/extra.nix { });
 
   nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # Add overlays your own flake exports (from overlays and pkgs dir):
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-
-      # You can also add overlays exported from other flakes:
-      inputs.agenix.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    
+   
     # Configure your nixpkgs instance
     config = {
       # Disable if you don't want unfree packages
@@ -47,14 +30,15 @@
 
     # This will add each flake input as a registry
     # To make nix3 commands consistent with your flake
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+    # registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
 
     # This will additionally add your inputs to the system's legacy channels
     # Making legacy nix commands consistent as well, awesome!
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+    # nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
     optimise.automatic = true;
     package = pkgs.unstable.nix;
+
     settings = {
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
@@ -84,18 +68,11 @@
     };
   };
 
-#   console = {
-#     earlySetup = true;
-#     font = "ter-powerline-v18n";
-#     packages = with pkgs; [ terminus_font powerline-fonts ];
-#   };
-
     hardware = {
         pulseaudio.enable = false;
 
         sane = {
             enable = true;
-            #extraBackends = with pkgs; [ hplipWithPlugin sane-airscan ];
             extraBackends = with pkgs; [ sane-airscan ];
         };
   
@@ -134,30 +111,32 @@
   #   xkbVariant = "altgr-intl";
   # };
 
-  #services.xserver = {
-  #  layout = "us";
-  #  xkbVariant = "altgr-intl";
+  services.xserver = {
+   layout = "us";
+   xkbVariant = "altgr-intl";
     # Disable xterm
   #  excludePackages = [ pkgs.xterm ];
   #  desktopManager.xterm.enable = false;
   
-  #  enable = true;
-    # displayManager.gdm.enable = true;
+   enable = true;
+    displayManager.gdm.enable = true;
     # --- GNOME ---
-    # desktopManager.gnome.enable = true;
-  #};
-
-  programs.hyprland = { # or wayland.windowManager.hyprland
-    enable = true;
-    xwayland.enable = true;
+    desktopManager.gnome.enable = true;
   };
 
+  # programs.hyprland = { # or wayland.windowManager.hyprland
+  #   enable = true;
+  #   xwayland.enable = true;
+  # };
+
   # Only install the docs I use
-  documentation.enable = true;
-  documentation.nixos.enable = false;
-  documentation.man.enable = true;
-  documentation.info.enable = false;
-  documentation.doc.enable = false;
+  documentation = {
+    enable = true;
+    nixos.enable = false;
+    man.enable = true;
+    info.enable = false;
+    doc.enable = false;
+  };
 
   fonts = {
     fontDir.enable = true;
@@ -165,7 +144,6 @@
       (nerdfonts.override { fonts = [ "FiraCode" "SourceCodePro" "UbuntuMono" ]; })
       fira
       fira-code-symbols
-    #   joypixels
       liberation_ttf
       noto-fonts-emoji
       source-serif
@@ -174,7 +152,8 @@
     ];
 
     # Enable a basic set of fonts providing several font styles and families and reasonable coverage of Unicode.
-    enableDefaultFonts = false;
+    enableDefaultFonts = true;
+    # enableDefaultFonts = false;
 
     fontconfig = {
       antialias = true;
@@ -196,9 +175,6 @@
       };
     };
   };
-
-  # Accept the joypixels license
-#   nixpkgs.config.joypixels.acceptLicense = true;
 
   # Use passed hostname to configure basic networking
   networking = {
@@ -249,16 +225,6 @@
     # Firmware update
     fwupd.enable = true;
     
-#     kmscon = {
-#       enable = true;
-#       hwRender = true;
-#       # Configure kmscon fonts via extraConfig so that we can use Nerd Fonts
-#       extraConfig = ''
-#         font-name=FiraCode Nerd Font Mono, SauceCodePro Nerd Font Mono
-#         font-size=12
-#       '';
-#     };
-
     openssh = {
         enable = true;
         settings = {
@@ -331,7 +297,7 @@
 
   users.users.abuss = {
     description = "Antal Buss";
-    initialPassword = "changeme";
+    initialPassword = "abuss";
     extraGroups = 
         let
             ifExists = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
@@ -348,9 +314,9 @@
     ];
     packages = [ pkgs.home-manager ];
     
-    # shell = pkgs.fish;
+    shell = pkgs.fish;
     
-    shell = pkgs.zsh;
+    # shell = pkgs.zsh;
   };
 
   system.stateVersion = stateVersion;

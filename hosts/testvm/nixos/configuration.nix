@@ -15,27 +15,28 @@
   # Allow non-free packages
   nixpkgs.config.allowUnfree = true
 
-  nix = {
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 10d";
-    };
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # nix = {
+  #   gc = {
+  #     automatic = true;
+  #     options = "--delete-older-than 10d";
+  #   };
 
-    optimise.automatic = true;
+  #   optimise.automatic = true;
 
-    settings = {
-      auto-optimise-store = true;
+  #   settings = {
+  #     auto-optimise-store = true;
 
-      # Enabling flakes
-      experimental-features = [ "nix-command" "flakes" ];
+  #     # Enabling flakes
+  #     experimental-features = [ "nix-command" "flakes" ];
       
-      # Avoid unwanted garbage collection when using nix-direnv
-      keep-outputs = true;
-      keep-derivations = true;
+  #     # Avoid unwanted garbage collection when using nix-direnv
+  #     keep-outputs = true;
+  #     keep-derivations = true;
 
-      warn-dirty = false;
-    };
-  };
+  #     warn-dirty = false;
+  #   };
+  # };
 
   # boot = {
   #   consoleLogLevel = 0;
@@ -162,7 +163,7 @@
       fira
       fira-code-symbols
       # liberation_ttf
-      noto-fonts-emoji
+      # noto-fonts-emoji
       source-serif
       # ubuntu_font_family
       work-sans
@@ -322,5 +323,5 @@
   };
 
   system.stateVersion = stateVersion;
-}
+};
 

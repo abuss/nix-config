@@ -68,7 +68,7 @@
       # home-manager switch -b backup --flake $HOME/.dotfiles/nix-config
       # nix build .#homeConfigurations."abuss@nixosvm".activationPackage
       homeConfigurations = {
-        "${abuss}@testvm" = home-manager.lib.homeManagerConfiguration {
+        "abuss@testvm" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = {inherit inputs outputs stateVersion username;};
           modules = [ ./hosts/testvm/home-manager/home.nix ];

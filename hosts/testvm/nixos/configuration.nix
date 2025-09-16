@@ -109,25 +109,6 @@
 
   time.timeZone = "America/Edmonton";  
 
-  # services.xserver = {
-  #   layout = "us";
-  #   xkbVariant = "altgr-intl";
-  # };
-
-  services.xserver = {
-   layout = "us";
-   xkbVariant = "altgr-intl";
-    # Disable xterm
-  #  excludePackages = [ pkgs.xterm ];
-  #  desktopManager.xterm.enable = false;
-  
-   enable = true;
-    displayManager.gdm.enable = true;
-    # --- GNOME ---
-    desktopManager.gnome.enable = true;
-  };
-
-
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;

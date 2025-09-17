@@ -2,7 +2,7 @@
 { config, inputs, lib, modulesPath, pkgs, ... }:
 {
   imports = [
-    (modulePath + "/profiles/quemu-guest.nix")
+    (modulesPath + "/profiles/quemu-guest.nix")
 
     # Disk partition definition
     (import ./disks.nix { })

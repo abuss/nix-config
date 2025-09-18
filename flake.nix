@@ -18,7 +18,7 @@
     };
     
     # Hardware definition
-    # nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   outputs =
@@ -46,23 +46,29 @@
         # Test vm
         testvm = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs outputs stateVersion username;};
-          modules = [ ./hosts/testvm/nixos/configuration.nix ];  
+          modules = [
+            nixos-hardware.nixosModules.framework-13-7040-amd
+            ./hosts/testvm/nixos/configuration.nix
+          ];
         };
 
         eszkoz = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs outputs stateVersion username;};
-          modules = [ ./hosts/eszkoz/nixos/configuration.nix ];  
+          modules = [
+            nixos-hardware.nixosModules.framework-13-7040-amd
+            ./hosts/eszkoz/nixos/configuration.nix
+          ];
         };
 
-        miniws = nixpkgs.lib.nixosSystem {
-          specialArgs = {inherit inputs outputs stateVersion username;};
-          modules = [ ./hosts/miniws/nixos/configuration.nix ];  
-        };
+        # miniws = nixpkgs.lib.nixosSystem {
+        #   specialArgs = {inherit inputs outputs stateVersion username;};
+        #   modules = [ ./hosts/miniws/nixos/configuration.nix ];  
+        # };
 
-        homecloud = nixpkgs.lib.nixosSystem {
-          specialArgs = {inherit inputs outputs stateVersion username;};
-          modules = [ ./hosts/homecloud/nixos/configuration.nix ];  
-        };
+        # homecloud = nixpkgs.lib.nixosSystem {
+        #   specialArgs = {inherit inputs outputs stateVersion username;};
+        #   modules = [ ./hosts/homecloud/nixos/configuration.nix ];  
+        # };
       };
 
       # home-manager switch -b backup --flake $HOME/.dotfiles/nix-config
@@ -80,17 +86,17 @@
           modules = [ ./hosts/eszkoz/home-manager/home.nix ];
         };
 
-        "abuss@miniws" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = {inherit inputs outputs stateVersion username;};
-          modules = [ ./hosts/miniws/home-manager/home.nix ];
-        };
+        # "abuss@miniws" = home-manager.lib.homeManagerConfiguration {
+        #   pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #   extraSpecialArgs = {inherit inputs outputs stateVersion username;};
+        #   modules = [ ./hosts/miniws/home-manager/home.nix ];
+        # };
 
-        "abuss@homecloud" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = {inherit inputs outputs stateVersion username;};
-          modules = [ ./hosts/homecloud/home-manager/home.nix ];
-        };
+        # "abuss@homecloud" = home-manager.lib.homeManagerConfiguration {
+        #   pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #   extraSpecialArgs = {inherit inputs outputs stateVersion username;};
+        #   modules = [ ./hosts/homecloud/home-manager/home.nix ];
+        # };
       };
 
     };

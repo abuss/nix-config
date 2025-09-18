@@ -55,7 +55,7 @@
         eszkoz = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs outputs stateVersion username;};
           modules = [
-            nixos-hardware.nixosModules.framework-13-7040-amd
+            # nixos-hardware.nixosModules.framework-13-7040-amd
             ./hosts/eszkoz/nixos/configuration.nix
           ];
         };

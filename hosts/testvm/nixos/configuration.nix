@@ -6,6 +6,7 @@
     inputs.disko.nixosModules.disko
 
     # Hardware and partition configuration
+    inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     ./hardware-configuration.nix
 
     # Services and Packages

@@ -28,8 +28,8 @@
     # AppImage support & X11 automation
     appimage-run
 
-    gnome.dconf-editor
-    gnome.gnome-tweaks
+    dconf-editor
+    gnome-tweaks
     gnome-browser-connector
 
     gnomeExtensions.appindicator

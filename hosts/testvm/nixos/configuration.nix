@@ -11,6 +11,7 @@
 
     # Services and Packages
     ./packages.nix
+    ./services/tailscale.nix
   ];
   
   # Allow non-free packages
@@ -110,25 +111,6 @@
 
   time.timeZone = "America/Edmonton";  
 
-  # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-
-    # Enable the GNOME Desktop Environment.
-    displayManager.gdm.wayland = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-
-    # Configure keymap in X11
-    xkb = {
-      layout = "us";
-      variant = "";
-    };
-
-    excludePackages = [ pkgs.xterm pkgs.gnome-tour ];
-    desktopManager.xterm.enable = false;
-  };
-
   # Only install the docs I use
   documentation = {
     enable = true;
@@ -144,36 +126,37 @@
       # (nerdfonts.override { fonts = [ "FiraCode" "SourceCodePro" "UbuntuMono" ]; })
       fira
       fira-code-symbols
+      source-serif
+      source-code-pro
+      work-sans
       # liberation_ttf
       # noto-fonts-emoji
-      source-serif
       # ubuntu_font_family
-      work-sans
     ];
 
     # Enable a basic set of fonts providing several font styles and families and reasonable coverage of Unicode.
     # enableDefaultFonts = true;
     # enableDefaultFonts = false;
 
-    fontconfig = {
-      antialias = true;
-      defaultFonts = {
-        serif = [ "Source Serif" ];
-        sansSerif = [ "Work Sans" "Fira Sans" "FiraGO" ];
-        monospace = [ "FiraCode Nerd Font Mono" "SauceCodePro Nerd Font Mono" ];
-        emoji = [ "Joypixels" "Noto Color Emoji" ];
-      };
-      enable = true;
-      hinting = {
-        autohint = false;
-        enable = true;
-        style = "slight";
-      };
-      subpixel = {
-        rgba = "rgb";
-        lcdfilter = "light";
-      };
-    };
+    # fontconfig = {
+    #   antialias = true;
+    #   defaultFonts = {
+    #     serif = [ "Source Serif" ];
+    #     sansSerif = [ "Work Sans" "Fira Sans" "FiraGO" ];
+    #     monospace = [ "FiraCode Nerd Font Mono" "SauceCodePro Nerd Font Mono" ];
+    #     emoji = [ "Joypixels" "Noto Color Emoji" ];
+    #   };
+    #   enable = true;
+    #   hinting = {
+    #     autohint = false;
+    #     enable = true;
+    #     style = "slight";
+    #   };
+    #   subpixel = {
+    #     rgba = "rgb";
+    #     lcdfilter = "light";
+    #   };
+    # };
   };
 
 
@@ -254,23 +237,23 @@
   # };
 
   # Create dirs for home-manager
-  systemd = {
+  # systemd = {
     # tmpfiles.rules = [
     #     "d /nix/var/nix/profiles/per-user/${username} 0755 ${username} root"
     #     "d /mnt/snapshot/${username} 0755 ${username} users"
     # ];
     
     # Workaround https://github.com/NixOS/nixpkgs/issues/180175
-    services.NetworkManager-wait-online.enable = false;
+    # services.NetworkManager-wait-online.enable = false;
 
-    services.configure-flathub-repo = {
-        wantedBy = ["multi-user.target"];
-        path = [ pkgs.flatpak ];
-        script = ''
-        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-        '';
-    };
-  };
+    # services.configure-flathub-repo = {
+    #     wantedBy = ["multi-user.target"];
+    #     path = [ pkgs.flatpak ];
+    #     script = ''
+    #     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    #     '';
+    # };
+  # };
 
   # ------ Users ----------
   users.users.root = {
@@ -282,7 +265,7 @@
 
   users.users.abuss = {
     description = "Antal Buss";
-    initialPassword = "abuss";
+    # initialPassword = "abuss";
     extraGroups = 
         let
             ifExists = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
@@ -292,16 +275,15 @@
 
     # mkpasswd -m sha-512
     # hashedPassword = "$6$UXNQ20Feu82wCFK9$dnJTeSqoECw1CGMSUdxKREtraO.Nllv3/fW9N3m7lPHYxFKA/Cf8YqYGDmiWNfaKeyx2DKdURo0rPYBrSZRL./";
+    hashedPassword = "$6$MOkGLOzXlj0lIE2d$5sxAysiDyD/7ZfntgZaN3vJ48t.BMi2qwPxqjgVxGXKXrNlFxRvnO8uCvOlHaGW2pVDrjt0JLNR9GWH.2YT5j.";
     homeMode = "0755";
     isNormalUser = true;
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDOA6V+TZJ+BmBAU4FB0nbhYQ9XOFZwCHdwXTuQkb77sPi6fVcbzso5AofUc+3DhfN56ATNOOslvjutSPE8kIp3Uv91/c7DE0RHoidNl3oLre8bau2FT+9AUTZnNEtWH/qXp5+fzvGk417mSL3M5jdoRwude+AzhPNXmbdAzn08TMGAkjGrMQejXItcG1OhXKUjqeLmB0A0l3Ac8DGQ6EcSRtgPCiej8Boabn21K2OBfq64KwW/MMh/FWTHndyBF/lhfEos7tGPvrDN+5G05oGjf0fnMOxsmAUdTDbtOTTeMTvDwjJdzsGUluEDbWBYPNlg5wacbimkv51/Bm4YwsGOkkUTy6eCCS3d5j8PrMbB2oNZfByga01FohhWSX9bv35KAP4nq7no9M6nXj8rQVsF0gPndPK/pgX46tpJG+pE1Ul6sSLR2jnrN6oBKzhdZJ54a2wwFSd207Zvahdx3m9JEVhccmDxWltxjKHz+zChAHsqWC9Zcqozt0mDRJNalW8fRXKcSWPGVy1rfbwltiQzij+ChCQQlUG78zW8lU7Bz6FuyDsEFpZSat7jtbdDBY0a4F0yb4lkNvu+5heg+dhlKCFj9YeRDrnvcz94OKvAZW1Gsjbs83n6wphBipxUWku7y86iYyAAYQGKs4jihhYWrFtfZhSf1m6EUKXoWX87KQ== antal.buss@gmail.com"
     ];
-    # packages = [ pkgs.home-manager ];
-    
-    # shell = pkgs.fish;
-    
     shell = pkgs.zsh;
+    # packages = [ pkgs.home-manager ];
+    # shell = pkgs.fish;
   };
 
   system.stateVersion = stateVersion;

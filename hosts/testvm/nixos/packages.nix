@@ -1,23 +1,11 @@
 { lib, pkgs, username, ... }: {
   imports = [
     # Services
-    # ./services/fwupd.nix
-    # ./services/kmscon.nix
-    # ./services/openssh.nix
-    # ./services/pipewire.nix
-    # ./services/smartmon.nix
-    # ./services/networkmanager.nix
-    # ./services/automount.nix # TODO
-    # ./services/firewall.nix
-    # ./services/cups.nix
-    # ./services/sane.nix
-    # ./services/avahi.nix
-    # ./services/bluetooth.nix
-    # ./services/flatpak.nix
-    # ./services/tailscale.nix # TODO
+   # ./services/tailscale.nix # TODO
   ];
 
   environment = {
+    # sessionVariables.NIXOS_OZONE_WL = "1";
     systemPackages = with pkgs; [
         # agenix
         bash
@@ -40,7 +28,9 @@
         micro
         mc
         gtop
-
+        # wireguard-tools
+        tmux
+        
         # pipewire support
         alsa-utils
         pulseaudio
@@ -51,6 +41,11 @@
         nvme-cli
         smartmontools
         gsmartcontrol
+        lm_sensors
+
+        runc
+        # slirp4netns
+        # umoci
     ];
   };
 }

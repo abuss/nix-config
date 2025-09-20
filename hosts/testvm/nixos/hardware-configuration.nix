@@ -8,6 +8,11 @@
     (import ./disks.nix { })
   ];
 
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+
+  # Enable AMD/Intel microcode
+  hardware.enableRedistributableFirmware = true;
+
   boot = {
     initrd.availableKernelModules = [ "xhci_pci" "ohci_pci" "ehci_pci" "virtio_pci" "ahci" "usbhid" "sr_mod" "virtio_blk" ];
     initrd.kernelModules = [ ];

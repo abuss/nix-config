@@ -11,6 +11,7 @@
 
     # Services and Packages
     ./packages.nix
+    ./gnome.nix
     ./services/tailscale.nix
   ];
   

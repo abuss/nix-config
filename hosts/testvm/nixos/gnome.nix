@@ -54,6 +54,6 @@
   ]);
 
   # Services
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services.udev.packages = with pkgs; [ gnome-settings-daemon ];
 
 }

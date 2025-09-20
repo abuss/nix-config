@@ -29,6 +29,7 @@
         mc
         gtop
         # wireguard-tools
+        helix
         tmux
         
         # pipewire support

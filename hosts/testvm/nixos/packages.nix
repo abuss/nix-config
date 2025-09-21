@@ -47,6 +47,7 @@
         runc
         # slirp4netns
         # umoci
+        uv
     ];
   };
 }

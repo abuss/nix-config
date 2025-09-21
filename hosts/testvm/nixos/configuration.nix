@@ -205,6 +205,8 @@
   environment.shells = with pkgs; [ zsh ];
 
   programs = {
+    nix-ld.enable = true;
+
     command-not-found.enable = false;
     
     # ZSH

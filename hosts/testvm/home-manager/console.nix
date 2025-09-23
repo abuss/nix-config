@@ -15,7 +15,7 @@
     
     dircolors = {
       enable = true;
-      enableBashIntegration = true;
+      # enableBashIntegration = true;
       enableZshIntegration = true;
       enableFishIntegration = true;
     };
@@ -70,29 +70,18 @@
     info.enable = true;
     jq.enable = true;
 
-    # powerline-go = {
-    #   enable = false;
-    #   settings = {
-    #     cwd-max-depth = 5;
-    #     cwd-max-dir-size = 10;
-    #     max-width = 50;
-    #     condensed = true;
-    #     # cwd-mode = "plain"; # fancy, semifancy, plain, dironly
-    #     git-mode = "simple"; # fancy, compact, simple
-    #   };
-    # };
   };
 
   home.packages = with pkgs; [
     dconf2nix # Nix code from Dconf files
     diffr # Modern Unix `diff`
-    difftastic # Modern Unix `diff`
+    # difftastic # Modern Unix `diff`
     dua # Modern Unix `du`
     duf # Modern Unix `df`
-    du-dust # Modern Unix `du`
+    # du-dust # Modern Unix `du`
     entr # Modern Unix `watch`
     fd # Modern Unix `find`
-    ffmpeg-headless # Terminal video encoder
+    # ffmpeg-headless # Terminal video encoder
     glow # Terminal Markdown renderer
     gping # Modern Unix `ping`
     hyperfine # Terminal benchmarking
@@ -100,13 +89,14 @@
     lazygit # Terminal Git client
     lurk # Modern Unix `strace`
     moar # Modern Unix `less`
-    neofetch # Terminal system info
+    # neofetch # Terminal system info
     nurl # Nix URL fetcher
     ripgrep # Modern Unix `grep`
     tldr # Modern Unix `man`
     wget # Terminal downloader
     yq-go # Terminal `jq` for YAML
-    dotter # Local config manager
+    # dotter # Local config manager
+    stow
   ];
 
 }

@@ -1,14 +1,8 @@
-# My home-manager configuration file
+# testvm home-manager configuration file
 { inputs, outputs, lib, config, pkgs, stateVersion, ...}: 
 {
   # You can import other home-manager modules here
   imports = [
-    # If you want to use modules your own flake exports (from modules/home-manager):
-    # outputs.homeManagerModules.example
-
-    # Or modules exported from other flakes (such as nix-colors):
-    inputs.nix-colors.homeManagerModules.default
-    
     # Console programs configurations
     ./console.nix
 
@@ -18,56 +12,31 @@
 
   # =============================================
   # Package configuration
-  nixpkgs = {
-    overlays = [
-      # Add overlays your own flake exports (from overlays and pkgs dir):
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
+  # nixpkgs.config.allowUnfree = true;
 
-      # You can also add overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
+  # nix = {
+  #   # This will add each flake input as a registry
+  #   # To make nix3 commands consistent with your flake
+  #   # registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
 
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-      # Workaround for https://github.com/nix-community/home-manager/issues/2942
-      allowUnfreePredicate = _: true;
-    };
-  };
-
-  nix = {
-    # This will add each flake input as a registry
-    # To make nix3 commands consistent with your flake
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-
-    package = pkgs.unstable.nix;
-    settings = {
-      auto-optimise-store = true;
-      experimental-features = [ "nix-command" "flakes" ];
-      # Avoid unwanted garbage collection when using nix-direnv
-      keep-outputs = true;
-      keep-derivations = true;
-      warn-dirty = false;
-    };
-  };
+  #   package = pkgs.unstable.nix;
+  #   settings = {
+  #     auto-optimise-store = true;
+  #     experimental-features = [ "nix-command" "flakes" ];
+  #     # Avoid unwanted garbage collection when using nix-direnv
+  #     keep-outputs = true;
+  #     keep-derivations = true;
+  #     warn-dirty = false;
+  #   };
+  # };
 
   # =============================================
   # Home configuration
-  home = {
-    homeDirectory = "/home/abuss";
-    username = "abuss";
-    sessionPath = [ "$HOME/.local/bin" ];
-    inherit stateVersion;
-  };
+  home.username = "abuss";
+  home.homeDirectory = "/home/abuss";
+  home.sessionPath = [ "$HOME/.local/bin" ];
+  home.stateVersion = stateVersion;
+  
 
 
   # =============================================
@@ -85,70 +54,74 @@
 
     neovim.enable = true;
     
-    kitty.settings = {
-      background_opacity = lib.mkForce "1.0";
-    };
+    # kitty.settings = {
+    #   background_opacity = lib.mkForce "1.0";
+    # };
 
     zsh = {
       enable = true;
-      enableAutosuggestions = true;
-      enableVteIntegration = true;
-      defaultKeymap = "emacs";
+      # enableAutosuggestions = true;
+      # enableVteIntegration = true;
+      # defaultKeymap = "emacs";
       
-      oh-my-zsh = {
-        enable = true;
-	      plugins = [ "sudo" ];
-	      # theme = "dpoggi";
-	      theme = "lukerandall";
-	      #theme = "alanpeabody";
-      };
+      # oh-my-zsh = {
+      #   enable = true;
+	     #  plugins = [ "sudo" ];
+	     #  # theme = "dpoggi";
+	     #  theme = "lukerandall";
+	     #  #theme = "alanpeabody";
+      # };
     };
   };
 
   home.packages = with pkgs; [
     # Browsers
-    unstable.firefox
+    # firefox
     # unstable.microsoft-edge
     # unstable.google-chrome
     
     # office and graphic
     # gimp-with-plugins
-    gthumb
+    # gthumb
     # inkscape
     # libreoffice
     # calibre
-    celluloid
+    # celluloid
 
     # Development
-    python311
+    # python313
     pyright
     rustup
-    # gitg
-    # meld
-    emacs29-gtk3
-    # unstable.vscode
-    unstable.vscode-fhs
+    gitg
+    meld
+    uv
+    helix
+    # emacs29-gtk3
+    vscode
+    # unstable.vscode-fhs
     # graphviz
     # typst
     # typst-lsp
 
     # Utils and tools
-    gnome.dconf-editor
+    # gnome.dconf-editor
     # gnome.simple-scan
-    kitty
+    # kitty
+    ghostty
     # rustdesk
-    # megasync
-    # remmina
-    ulauncher
+    megasync
+    remmina
+    # ulauncher
     # usplay
+    # seafile-client
 
     # Virtualization
     buildah
     podman-compose
     podman-tui
-    unstable.quickemu
+    quickemu
     # for running X11 apps in distrobox
-    xorg.xhost
+    # xorg.xhost
 
     # zoom-us
     # barrier
@@ -160,13 +133,13 @@
     file.".face".source = ./config/face.png;
 
     # mc
-    file.".config/mc/ini".source = ./config/mc-ini;
+    # file.".config/mc/ini".source = ./config/mc-ini;
     
     # emacs
-    file.".emacs.d/init.el".source = ./config/emacs-init.el;
+    # file.".emacs.d/init.el".source = ./config/emacs-init.el;
 
     # ULauncher
-    file.".config/ulauncher/settings.json".source = ./config/ulauncher-settings.json;
+    # file.".config/ulauncher/settings.json".source = ./config/ulauncher-settings.json;
   
   };
 
